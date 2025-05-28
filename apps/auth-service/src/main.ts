@@ -1,14 +1,18 @@
 import express from 'express';
-
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+import chalk from 'chalk';
+const port = process.env.PORT ? Number(process.env.PORT) : 6001;
 
 const app = express();
 
 app.get('/', (req, res) => {
-  res.send({ message: 'Hello API' });
+  res.send({ message: 'Hello from auth-service' });
 });
 
-app.listen(port, host, () => {
-  console.log(`[ ready ] http://${host}:${port}`);
+const server = app.listen(port, () => {
+  console.log(
+    `auth-srevice    [ Ready ]`,
+    chalk.bold.greenBright(`    http://localhost:${port}`)
+  );
 });
+
+server.on('error', (err) => console.log(err));
