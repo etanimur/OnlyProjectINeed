@@ -1,4 +1,4 @@
-import { AppError } from 'C:/Users/asus/OneDrive/Desktop/OnlyProjectINeed/try1/packages/error-handler/index.js';
+import { AppError } from './index';
 import { Request, Response } from 'express';
 export const errorMiddleware = (err: Error, req: Request, res: Response) => {
   if (err instanceof AppError) {
@@ -13,7 +13,7 @@ export const errorMiddleware = (err: Error, req: Request, res: Response) => {
 
   console.log('unhandeled error');
   return res.status(500).json({
-    status: 'error',
+    // status: 'error',
     message: 'Something went wrong',
   });
 };

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nx run-many --target=serve --all"
   },
+  "allowImportingTsExtensions": true,
   "private": true,
   "dependencies": {
     "ajv": "^8.17.1",

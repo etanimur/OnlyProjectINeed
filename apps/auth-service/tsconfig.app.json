@@ -3,18 +3,21 @@
   "compilerOptions": {
     "outDir": "dist",
     "types": ["node"],
-    "rootDir": "src",
-    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo"
+    "rootDir": "../../",
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "allowImportingTsExtensions": true
   },
-  "include": ["src/**/*.ts"],
+  // "allowImportingTsExtensions": true,
+  "include": [
+    "src/**/*.ts",
+    "../../packages/**/*.ts",
+    "../../packages/**/*.js"
+  ],
   "exclude": [
     "out-tsc",
     "dist",
     "jest.config.ts",
     "src/**/*.spec.ts",
-    "src/**/*.test.ts",
-    "eslint.config.js",
-    "eslint.config.cjs",
-    "eslint.config.mjs"
+    "src/**/*.test.ts"
   ]
 }
