@@ -5,11 +5,13 @@
     "types": ["node"],
     "rootDir": "../../",
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  // "allowImportingTsExtensions": true,
   "include": [
     "src/**/*.ts",
+    "src/swagger-output.json", // <--- add this line
     "../../packages/**/*.ts",
     "../../packages/**/*.js"
   ],

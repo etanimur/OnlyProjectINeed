@@ -22,6 +22,7 @@ const renderEmailTemplate = async (
 ): Promise<string> => {
   const templatePath = path.join(
     process.cwd(),
+    'apps',
     'auth-service',
     'src',
     'utils',
@@ -41,7 +42,7 @@ export const sendEmail = async (
   try {
     const html = await renderEmailTemplate(templateName, data);
     await transporter.sendMail({
-      from: `<${process.env.SMTP_USER}`,
+      from: `E-Commerce Team <${process.env.SMTP_USER}>`,
       to,
       subject,
       html,

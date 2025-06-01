@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@packages/*": ["packages/*"]
+    },
     "declarationMap": true,
     "emitDeclarationOnly": true,
     "importHelpers": true,
