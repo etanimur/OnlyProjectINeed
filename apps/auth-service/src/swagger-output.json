@@ -6,8 +6,10 @@
     "version": "1.0.0"
   },
   "host": "localhost:6001",
-  "basePath": "/api",
-  "schemes": ["http"],
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/user-registration": {
       "post": {
@@ -20,13 +22,13 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "raghav"
+                  "example": "any"
                 },
                 "email": {
-                  "example": "raghavaloria@gmail.com"
+                  "example": "any"
                 },
                 "password": {
-                  "example": "password123"
+                  "example": "any"
                 }
               }
             }
@@ -50,16 +52,107 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "raghavaloria@gmail.com"
+                  "example": "any"
                 },
                 "otp": {
                   "example": "any"
                 },
                 "password": {
-                  "example": "password123"
+                  "example": "any"
                 },
                 "name": {
-                  "example": "raghav"
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/login-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/forgot-password-user": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/reset-password-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/verify-forgot-password-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "otp": {
+                  "example": "any"
                 }
               }
             }

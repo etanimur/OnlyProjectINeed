@@ -1,11 +1,13 @@
 /* eslint-disable @nx/enforce-module-boundaries */
+import { NextFunction, Request, Response } from 'express';
 import crypto from 'crypto';
-import { AppValidationError } from '../../../../packages/error-handler';
+import bcrypt from 'bcryptjs';
+import { AppValidationError } from '@packages/error-handler';
+import redis from '@packages/libs/redis';
+import prisma from '@packages/libs/prisma';
+import { sendEmail } from './sendMail';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-import redis from '../../../../packages/libs/redis';
-import { sendEmail } from './sendMail';
-import { NextFunction } from 'express';
 
 export const validateRegistrationData = (
   data: any,
@@ -25,6 +27,7 @@ export const validateRegistrationData = (
     throw new AppValidationError('Invalid email format');
   }
 };
+
 export const trackOtpRequests = async (email: string, next: NextFunction) => {
   const otpRequestKey = `otp_request_count:${email}`;
   const otpRequests = parseInt((await redis.get(otpRequestKey)) || '0');
@@ -39,7 +42,8 @@ export const trackOtpRequests = async (email: string, next: NextFunction) => {
   await redis.set(otpRequestKey, otpRequests + 1, 'EX', 3600);
   // await redis.incr(otpRequestKey, 'EX', 3600);
 };
-export const checkOtpRegistration = async (
+
+export const checkOtpRestrictions = async (
   email: string,
   next: NextFunction
 ) => {
@@ -96,10 +100,8 @@ export const verifyOtp = async (
 
       await redis.del(`otp:${email}`, failedAttemptsKey);
 
-      return next(
-        new AppValidationError(
-          ' Too many attempts try again later  ( 30 mins ) '
-        )
+      throw new AppValidationError(
+        ' Too many attempts try again later  ( 30 mins ) '
       );
     }
     await redis.set(failedAttemptsKey, failedAttempts + 1, 'EX', 300);
@@ -109,5 +111,85 @@ export const verifyOtp = async (
       )
     );
     await redis.del(failedAttemptsKey);
+  }
+};
+
+export const handleForgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  role: 'user' | 'seller'
+) => {
+  try {
+    const { email } = req.body;
+    const user =
+      role === 'user' && (await prisma.users.findUnique({ where: { email } }));
+    if (!user) {
+      return next(new AppValidationError('user doesnt exists'));
+    }
+
+    await checkOtpRestrictions(email, next);
+    await trackOtpRequests(email, next);
+    await sendOtp(user.name, email, 'forgot-password-user-mail');
+    res.status(200).json({
+      success: true,
+      message: 'otp sent to mail , please verify you account',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const verifyUserForgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    return next(new AppValidationError('invalid request'));
+  }
+  await verifyOtp(email, otp, next);
+  res.status(200).json({
+    success: true,
+    message: 'otp verified',
+  });
+};
+
+export const resetUserPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      next(new AppValidationError('All fields are necessary'));
+    }
+    const user = await prisma.users.findUnique({ where: { email } });
+    if (!user) {
+      return next(new AppValidationError('user not found'));
+    }
+
+    const oldPassword = user.password;
+    if (!(await bcrypt.compare(password, oldPassword))) {
+      next(
+        new AppValidationError(
+          'new password cannot be same as the old password'
+        )
+      );
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await prisma.users.update({
+      where: { email },
+      data: { password: hashedPassword },
+    });
+
+    res.status(200).json({
+      sucess: true,
+      message: 'password reset successfully',
+    });
+  } catch (err) {
+    next(err);
   }
 };
