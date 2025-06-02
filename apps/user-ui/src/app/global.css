@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: hsl(0, 0%, 0%);
+    --color-secondary: hsl(0, 0%, 50%);
+    --color-bg-primary: hsl(220, 100%, 50%);
+    --color-text-base: hsl(0, 0%, 100%);
+  }
+}
+
+.theme-black {
+  --color-primary: hsl(0, 0%, 0%);
+  --color-secondary: hsl(0, 0%, 50%)
+}
+
+.theme-white {
+  --color-primary: hsl(0, 0%, 0%);
+  --color-secondary: hsl(0, 0%, 50%);
+}
+
+.theme-green {
+  --color-primary: hsl(0, 0%, 0%);
+  --color-secondary: hsl(0, 0%, 50%);
+}
