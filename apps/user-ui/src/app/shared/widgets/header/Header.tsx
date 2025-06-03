@@ -9,7 +9,7 @@ import HeaderBottom from './HeaderBottom';
 
 const Header = () => {
   return (
-    <div className="w-full border-b border-gray">
+    <div className="w-full border-b pb-1 border-gray">
       <div className="w-[80%] py-5 m-auto flex items-center justify-between">
         <div className="">
           <Link href={'/'}>
