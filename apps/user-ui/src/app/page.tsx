@@ -1,3 +1,7 @@
 export default function Index() {
-  return <>user ui</>;
+  return (
+    <>
+      <div className="h-screen">user - ui</div>
+    </>
+  );
 }

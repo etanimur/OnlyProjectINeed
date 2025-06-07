@@ -13,31 +13,28 @@ const port = process.env.PORT ? Number(process.env.PORT) : 6001;
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
-  res.send({ message: 'Hello from auth-service' });
+    res.send({ message: 'Hello from auth-service' });
 });
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.get('/docs-json', (req, res) => {
-  res.json(swaggerDoc);
+    res.json(swaggerDoc);
 });
 
-app.use(errorMiddleware);
 app.use('/api', router);
+app.use(errorMiddleware);
 
 const server = app.listen(port, () => {
-  console.log(
-    `auth-service  [ Ready ]`,
-    chalk.bold.greenBright(`    http://localhost:${port}/api`)
-  );
-  console.log(
-    `auth-service  [ Ready ]  ${chalk.bold.red('[ DOCS ]')}`,
-    chalk.bold.greenBright(`    http://localhost:${port}/docs`)
-  );
-  // console.log(
-  //   `auth-service  [ Ready ]  ${chalk.bold.red('[ JSON ]')}`,
-  //   chalk.bold.greenBright(`    http://localhost:${port}/docs-json`)
-  // );
+    console.log(
+        `auth-service  [ Ready ]`,
+        chalk.bold.greenBright(`    http://localhost:${port}/`)
+    );
+    console.log(
+        `auth-service  [ Ready ]  ${chalk.bold.red('[ DOCS ]')}`,
+        chalk.bold.greenBright(`    http://localhost:${port}/docs`)
+    );
 });
 
 server.on('error', (err) => console.log(err));
