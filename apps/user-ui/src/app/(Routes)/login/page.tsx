@@ -35,6 +35,8 @@ const Login = () => {
     // Refs for OTP inputs for better focus management
     const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+    userData ? console.log('yay') : console.log('nay');
+
     const signupMutation = useMutation({
         mutationFn: async (data: FormData) => {
             const res = await axios.post(
