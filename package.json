@@ -5,7 +5,8 @@
     "scripts": {
         "dev": "nx run-many --target=serve --all",
         "auth-docs": "node apps/auth-service/src/swagger.mjs",
-        "user-ui": "nx run user-ui:dev"
+        "user-ui": "nx run user-ui:dev",
+        "seller-ui": "nx run seller-ui:dev"
     },
     "allowImportingTsExtensions": true,
     "private": true,
@@ -21,6 +22,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.5.0",
         "ejs": "^3.1.10",
+        "eslint": "^9.29.0",
         "express": "^4.21.2",
         "express-http-proxy": "^2.1.1",
         "express-rate-limit": "^7.5.0",
@@ -48,7 +50,7 @@
         "@next/eslint-plugin-next": "^15.2.4",
         "@nx/esbuild": "21.1.2",
         "@nx/eslint": "21.1.2",
-        "@nx/eslint-plugin": "21.1.2",
+        "@nx/eslint-plugin": "^21.1.2",
         "@nx/express": "^21.1.2",
         "@nx/jest": "21.1.2",
         "@nx/js": "21.1.2",
@@ -82,7 +84,6 @@
         "@types/swagger-ui-express": "^4.1.8",
         "autoprefixer": "10.4.13",
         "esbuild": "^0.19.2",
-        "eslint": "^9.8.0",
         "eslint-config-next": "^15.2.4",
         "eslint-config-prettier": "^10.0.0",
         "eslint-plugin-import": "2.31.0",

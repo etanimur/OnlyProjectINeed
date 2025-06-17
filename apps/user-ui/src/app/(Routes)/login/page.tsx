@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
@@ -34,6 +34,8 @@ const Login = () => {
 
     // Refs for OTP inputs for better focus management
     const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+    userData ? console.log('yay') : console.log('nay');
 
     const signupMutation = useMutation({
         mutationFn: async (data: FormData) => {
@@ -222,7 +224,7 @@ const Login = () => {
                                         errors.email ? 'border-red-500' : ''
                                     }`}
                                     placeholder="Email address"
-                                    disabled={signupMutation.isLoading}
+                                    disabled={signupMutation.isPending}
                                 />
                                 {errors.email && (
                                     <span className="text-red-500 text-xs mt-1 block">
@@ -241,7 +243,7 @@ const Login = () => {
                                         errors.password ? 'border-red-500' : ''
                                     }`}
                                     placeholder="Password"
-                                    disabled={signupMutation.isLoading}
+                                    disabled={signupMutation.isPending}
                                 />
                                 <button
                                     type="button"
@@ -270,7 +272,7 @@ const Login = () => {
                                         setRememberMe(e.target.checked)
                                     }
                                     className="h-4 w-4 focus:ring-primary rounded-xl"
-                                    disabled={signupMutation.isLoading}
+                                    disabled={signupMutation.isPending}
                                 />
                                 <label className="ml-2 block text-sm text-tUnfocused">
                                     Remember me
@@ -282,9 +284,9 @@ const Login = () => {
                             <button
                                 type="submit"
                                 className="group relative w-full flex justify-center py-2 px-4 hover:bg-primaryFocus border border-transparent text-sm font-medium rounded-md text-white bg-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                disabled={signupMutation.isLoading}
+                                disabled={signupMutation.isPending}
                             >
-                                {signupMutation.isLoading
+                                {signupMutation.isPending
                                     ? 'Signing in...'
                                     : 'Sign in'}
                             </button>
@@ -301,9 +303,9 @@ const Login = () => {
                                     <input
                                         key={idx}
                                         id={`otp-input-${idx}`}
-                                        ref={(el) =>
-                                            (otpRefs.current[idx] = el)
-                                        }
+                                        ref={(el) => {
+                                            otpRefs.current[idx] = el;
+                                        }}
                                         type="text"
                                         inputMode="numeric"
                                         maxLength={1}
