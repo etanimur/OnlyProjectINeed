@@ -77,8 +77,7 @@
     "generators": {
         "@nx/next": {
             "application": {
-                "style": "tailwind",
-                "linter": "eslint"
+                "style": "tailwind"
             }
         }
     }
